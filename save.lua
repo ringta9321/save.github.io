@@ -6,6 +6,31 @@ local humanoid = chr:WaitForChild("Humanoid") -- Ensure Humanoid exists
 local targetPosition = Vector3.new(-424, 30, -49041) -- Target seat position
 local walkTargetPosition = Vector3.new(-341.88, 3, -49045) -- New walk target position
 
+local player = game.Players.LocalPlayer
+local backpack = player:WaitForChild("Backpack")
+local humanoid = player.Character:WaitForChild("Humanoid")
+
+local function equipRevolver()
+    local revolver = backpack:FindFirstChild("Revolver") or humanoid:FindFirstChild("Revolver")
+    if revolver then
+        humanoid:EquipTool(revolver)
+        print("Revolver equipped!")
+    else
+        print("Revolver not found!")
+    end
+end
+
+-- Monitor changes in the equipped tools
+humanoid.ChildAdded:Connect(function(tool)
+    if tool:IsA("Tool") and tool.Name ~= "Revolver" then
+        equipRevolver() -- Force equip the Revolver if another tool is equipped
+    end
+end)
+
+-- Call the function initially to ensure the Revolver is equipped at the start
+equipRevolver()
+
+
 -- Auto Headshot Functionality
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local ShootRemote = ReplicatedStorage.Remotes.Weapon.Shoot
