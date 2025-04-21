@@ -148,6 +148,21 @@ while true do
         task.wait()
         game:GetService("VirtualInputManager"):SendKeyEvent(false, "Space", false, game)
 
+
+        local player = game.Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+
+-- Wait for a specified time, then enable noclip
+task.wait(1) -- Wait for 1 second
+
+for _, part in ipairs(char:GetDescendants()) do
+    if part:IsA("BasePart") then
+        part.CanCollide = false -- Disable collision
+    end
+end
+
+print("Noclip enabled after 1-second delay!")
+
         -- Walk to the new target position using MoveTo
         humanoid:MoveTo(walkTargetPosition) -- Start walking to the new target position
         local success, message = humanoid.MoveToFinished:Wait() -- Wait for the movement to finish
